@@ -8,14 +8,25 @@ Walk the dependency graph of an HTML document.
 ```bash
 npm install html-deps
 ```
+# API
+
+`let HTMLDeps = require('html-deps');`
+
+## depper = HTMLDeps()
+
+Return an object transform stream `depper` that expects entry filenames.
+
+## depper.inline(source, basedir, callback)
+
+Adds a new inline file to the dependency graph, where source is the HTML source to include and basedir is the directory to pretend it's being created in. A basedir is required to properly resolve dependencies and defaults to process.cwd().
 
 # Example
 
 ``` js
-var HTMLDeps = require('html-deps');
+let HTMLDeps = require('html-deps');
 
-var depper = new HTMLDeps();
-var entry = '/path/to/your/document.html';
+let depper = new HTMLDeps();
+let entry = '/path/to/your/document.html';
 
 depper.on('data', function (dependency) {
     // do something with dependency
