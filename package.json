@@ -1,0 +1,28 @@
+{
+  "name": "html-deps",
+  "version": "0.1.0",
+  "description": "Walk the dependency graph of an HTML document",
+  "main": "src/index.js",
+  "scripts": {
+    "pretest": "npm prune && npm update",
+    "test": "tap test/*.js --cov --reporter=spec --100",
+    "testhtml": "tap test/*.js --cov --reporter=spec --100 --coverage-report=html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ericmorand/html-deps.git"
+  },
+  "author": "Eric MORAND",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ericmorand/html-deps/issues"
+  },
+  "homepage": "https://github.com/ericmorand/html-deps#readme",
+  "devDependencies": {
+    "tap": "^10.3.0"
+  },
+  "dependencies": {
+    "htmlparser2": "^3.9.2",
+    "promise": "^7.1.1"
+  }
+}
