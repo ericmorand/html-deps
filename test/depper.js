@@ -1,9 +1,10 @@
 const Depper = require('../src');
+const fs = require('fs');
 const tap = require('tap');
 const path = require('path');
 
 tap.test('depper', function (test) {
-    test.plan(6);
+    test.plan(7);
 
     test.test('should handle relative resource', function (test) {
         let d = new Depper();
@@ -147,5 +148,55 @@ tap.test('depper', function (test) {
         });
 
         d.end(entry);
+    });
+
+    test.test('should support inline source', function (test) {
+        test.plan(2);
+
+        test.test('with basedir', function(test) {
+            let d = new Depper();
+            let entry = path.resolve('test/fixtures/inline/index.html');
+
+            let rows = [];
+
+            d.on('data', function (row) {
+                rows.push(row);
+            });
+
+            d.on('finish', function () {
+                test.same(rows.sort(), [
+                    path.join(path.dirname(entry), 'lorem.png')
+                ].sort());
+
+                test.end();
+            });
+
+            d.inline(fs.readFileSync(entry), path.dirname(entry));
+
+            d.end();
+        });
+
+        test.test('without basedir', function(test) {
+            let d = new Depper();
+            let entry = path.join(__dirname, '/fixtures/inline/index.html');
+
+            let rows = [];
+
+            d.on('missing', function (row) {
+                rows.push(row);
+            });
+
+            d.on('finish', function () {
+                test.same(rows.sort(), [
+                    path.join(process.cwd(), 'lorem.png')
+                ].sort());
+
+                test.end();
+            });
+
+            d.inline(fs.readFileSync(entry));
+
+            d.end();
+        });
     });
 });
